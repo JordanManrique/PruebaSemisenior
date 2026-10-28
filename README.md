@@ -6,8 +6,8 @@ Aplicación para registrar muestras de pacientes, listarlas y controlar su estad
 |---|---|
 | `BACK/back_prueba` | API ASP.NET Core (.NET 10) + EF Core + SQL Server |
 | `FRONT/front-prueba` | Aplicación Angular 17 |
-| `SQL/schema.sql` | Crea tablas, restricciones, índices y catálogo de exámenes sobre una BD vacía |
-| `SQL/ajuste_base_existente.sql` | Ajusta una BD creada con `Script_base_Datos.sql` al modelo del backend |
+| `database/schema.sql` | Crea tablas, restricciones, índices y catálogo de exámenes sobre una BD vacía |
+| `database/queries.sql` | Consultas de reporte solicitadas en la sección de base de datos |
 
 ## Requisitos previos
 
@@ -17,15 +17,25 @@ Aplicación para registrar muestras de pacientes, listarlas y controlar su estad
 
 ## Base de datos
 
-**Base nueva**
-
 ```sql
 CREATE DATABASE Muestras;
 ```
 
-y luego ejecutar `SQL/schema.sql` sobre `Muestras`.
+Luego ejecutar `database/schema.sql` sobre `Muestras`. Las consultas de `database/queries.sql` se pueden ejecutar después sobre la misma base.
 
-**Base ya creada con `Script_base_Datos.sql`**: ejecutar `SQL/ajuste_base_existente.sql`. Renombra `Patiens` → `Patients`, `Test` → `Tests` y `SampleTest` → `SampleTests`. También agrega la columna `CollectedAt` y crea los índices. Conserva los datos y se puede ejecutar más de una vez.
+### Consultas (`database/queries.sql`)
+
+1. **Muestras por estado del mes en curso**: filtra por el rango `[primer día del mes, primer día del mes siguiente)` en lugar de usar `MONTH()`/`YEAR()` sobre la columna, para que SQL Server pueda usar `IX_Samples_CreatedAt`.
+2. **Solicitudes por examen**: `LEFT JOIN` desde `Tests` y `COUNT(st.SampleId)`, así los exámenes nunca solicitados aparecen con 0. Se ordena de mayor a menor cantidad.
+3. **Pacientes con 2 o más rechazos**: `GROUP BY` paciente con `HAVING COUNT(*) >= 2` sobre las muestras en estado `Rechazada`.
+
+### Índices
+
+| Índice | Por qué |
+|---|---|
+| `IX_Samples_CreatedAt (CreatedAt DESC, Id DESC) INCLUDE (Status)` | El listado ordena por `CreatedAt DESC` y pagina con `OFFSET/FETCH`; también apoya la consulta 1 |
+| `IX_Samples_PatientId INCLUDE (Status)` | Join con `Patients` en el listado y conteo de rechazos de la consulta 3 |
+| `IX_SampleTests_TestId` | La PK de `SampleTests` empieza por `SampleId`; este índice apoya el conteo por examen de la consulta 2 |
 
 ## Configuración de la cadena de conexión
 
@@ -284,5 +294,4 @@ Validation/                           → validadores personalizados (fecha no f
 
 ## Pendiente
 
-- `SQL/queries.sql` (consultas de reporte de la prueba).
-- Frontend Angular.
+- Ninguno conocido.
