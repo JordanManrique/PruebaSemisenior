@@ -1,0 +1,9 @@
+.brand { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.spacer { flex: 1 1 auto; }
+.active { background: rgba(255, 255, 255, 0.15); }
+.content { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+
+@media (max-width: 600px) {
+  .brand { font-size: 16px; }
+  mat-toolbar a { padding: 0 8px; min-width: 0; }
+}

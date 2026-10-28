@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+  <span class="brand">Recepción de muestras</span>
+  <span class="spacer"></span>
+  <a mat-button routerLink="/samples" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Muestras</a>
+  <a mat-button routerLink="/samples/new" routerLinkActive="active">Nueva muestra</a>
+</mat-toolbar>
+
+<main class="content">
+  <router-outlet />
+</main>

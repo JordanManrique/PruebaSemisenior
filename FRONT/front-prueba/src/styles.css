@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* El tema indigo-pink es claro: se fija el esquema y el fondo para que no herede el modo oscuro del navegador. */
+:root { color-scheme: light; }
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #f4f5f9;
+  color: rgba(0, 0, 0, 0.87);
+}

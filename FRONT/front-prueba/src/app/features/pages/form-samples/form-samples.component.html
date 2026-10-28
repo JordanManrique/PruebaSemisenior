@@ -1,0 +1,111 @@
+<div class="page-header">
+  <h1>Registrar muestra</h1>
+  <p>Complete los datos del paciente, la muestra y los exámenes solicitados.</p>
+</div>
+
+<mat-card class="form-card">
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+    <h2 class="section-title">Paciente y muestra</h2>
+
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Número de documento</mat-label>
+        <input matInput formControlName="documentNumber" inputmode="numeric" maxlength="12" placeholder="Ej: 1001006">
+        @if (form.controls.documentNumber.hasError('required')) {
+          <mat-error>El número de documento es obligatorio.</mat-error>
+        } @else if (form.controls.documentNumber.hasError('pattern')) {
+          <mat-error>Solo se permiten dígitos.</mat-error>
+        } @else if (form.controls.documentNumber.hasError('minlength') || form.controls.documentNumber.hasError('maxlength')) {
+          <mat-error>Debe tener entre 6 y 12 dígitos.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Nombre del paciente</mat-label>
+        <input matInput formControlName="fullName" placeholder="Nombre completo">
+        @if (form.controls.fullName.hasError('required')) {
+          <mat-error>El nombre del paciente es obligatorio.</mat-error>
+        } @else if (form.controls.fullName.hasError('minlength')) {
+          <mat-error>Debe tener mínimo 3 caracteres.</mat-error>
+        } @else if (form.controls.fullName.hasError('maxlength')) {
+          <mat-error>Debe tener máximo 150 caracteres.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Tipo de muestra</mat-label>
+        <mat-select formControlName="sampleType" placeholder="Seleccione">
+          @for (type of sampleTypes; track type) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.sampleType.hasError('required')) {
+          <mat-error>Seleccione un tipo de muestra.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Fecha y hora de toma</mat-label>
+        <input matInput type="datetime-local" formControlName="collectedAt" [max]="maxDate">
+        @if (form.controls.collectedAt.hasError('required')) {
+          <mat-error>La fecha y hora de toma es obligatoria.</mat-error>
+        } @else if (form.controls.collectedAt.hasError('futureDate')) {
+          <mat-error>La fecha y hora de toma no puede ser futura.</mat-error>
+        } @else if (form.controls.collectedAt.hasError('invalidDate')) {
+          <mat-error>Fecha inválida.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <section class="tests">
+      <div class="tests-header">
+        <h2 class="section-title">Códigos de exámenes</h2>
+        <button mat-stroked-button color="primary" type="button" (click)="addTestCode()">
+          <mat-icon>add</mat-icon> Agregar examen
+        </button>
+      </div>
+
+      <div class="test-list">
+        @for (control of testCodes.controls; track control; let i = $index) {
+          <div class="test-row">
+            <mat-form-field>
+              <mat-label>Código {{ i + 1 }}</mat-label>
+              <input matInput [formControl]="control" placeholder="Ej: HEM01">
+              @if (control.hasError('required')) {
+                <mat-error>El código es obligatorio.</mat-error>
+              }
+            </mat-form-field>
+            <button mat-icon-button type="button" color="warn" aria-label="Quitar examen"
+                    (click)="removeTestCode(i)" [disabled]="testCodes.length <= 1">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+
+      @if (testCodes.hasError('duplicated')) {
+        <p class="form-error">Hay códigos de examen repetidos.</p>
+      }
+    </section>
+
+    @if (serverErrors().length) {
+      <ul class="server-errors">
+        @for (msg of serverErrors(); track msg) {
+          <li>{{ msg }}</li>
+        }
+      </ul>
+    }
+
+    <div class="actions">
+      <a mat-button routerLink="/samples">Cancelar</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || saving()">
+        @if (saving()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Registrar
+        }
+      </button>
+    </div>
+  </form>
+</mat-card>

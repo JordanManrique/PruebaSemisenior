@@ -1,0 +1,46 @@
+@baseUrl = http://localhost:5159/api
+
+### Listar muestras (por defecto page=1, pageSize=10)
+GET {{baseUrl}}/samples?page=1&pageSize=10
+
+### Registrar muestra
+POST {{baseUrl}}/samples
+Content-Type: application/json
+
+{
+  "documentNumber": "1001006",
+  "fullName": "Pedro Pérez",
+  "sampleType": "Sangre",
+  "collectedAt": "2026-10-28T08:30:00",
+  "testCodes": ["HEM01", "GLU02"]
+}
+
+### Registrar con código inexistente (400)
+POST {{baseUrl}}/samples
+Content-Type: application/json
+
+{
+  "documentNumber": "1001006",
+  "fullName": "Pedro Pérez",
+  "sampleType": "Sangre",
+  "collectedAt": "2026-10-28T08:30:00",
+  "testCodes": ["HEM01", "XYZ99"]
+}
+
+### Cambiar estado
+PATCH {{baseUrl}}/samples/2/status
+Content-Type: application/json
+
+{ "status": "Recibida" }
+
+### Rechazar sin motivo (400)
+PATCH {{baseUrl}}/samples/3/status
+Content-Type: application/json
+
+{ "status": "Rechazada" }
+
+### Transición no permitida (409)
+PATCH {{baseUrl}}/samples/1/status
+Content-Type: application/json
+
+{ "status": "Recibida" }

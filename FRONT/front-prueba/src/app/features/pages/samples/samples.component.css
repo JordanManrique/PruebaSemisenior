@@ -1,0 +1,13 @@
+.header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.table-wrapper { overflow-x: auto; }
+table { width: 100%; }
+.num { text-align: right; }
+.state { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 48px 16px; color: #555; }
+.state.error { color: #b00020; }
+.pager { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 12px 16px; flex-wrap: wrap; }
+.pager span { margin-right: auto; color: #666; font-size: 14px; }
+.status { padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+.status-Registrada { background: #e3f2fd; color: #1565c0; }
+.status-Recibida { background: #fff8e1; color: #8d6e00; }
+.status-Procesada { background: #e8f5e9; color: #2e7d32; }
+.status-Rechazada { background: #ffebee; color: #c62828; }

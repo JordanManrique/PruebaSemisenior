@@ -1,0 +1,112 @@
+.page-header {
+    margin-bottom: 16px;
+}
+
+.page-header h1 {
+    margin: 0;
+}
+
+.page-header p {
+    margin: 4px 0 0;
+    color: #5f6368;
+}
+
+.form-card {
+    padding: 24px;
+}
+
+.section-title {
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Dos columnas con separación vertical para que los mensajes de error no toquen el campo siguiente. */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    row-gap: 8px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.tests {
+    margin-top: 8px;
+    padding-top: 24px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.tests-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tests-header .section-title {
+    margin: 0;
+}
+
+.test-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    column-gap: 16px;
+    row-gap: 8px;
+}
+
+.test-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.test-row mat-form-field {
+    flex: 1;
+    min-width: 0;
+}
+
+.test-row button {
+    margin-top: 4px;
+}
+
+.form-error {
+    margin: 4px 0 0;
+    color: #d32f2f;
+    font-size: 13px;
+}
+
+.server-errors {
+    margin: 16px 0 0;
+    padding: 12px 12px 12px 32px;
+    background: #fdecea;
+    color: #b71c1c;
+    border-radius: 4px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+@media (max-width: 600px) {
+    .form-card {
+        padding: 16px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        flex-direction: column-reverse;
+    }
+}
